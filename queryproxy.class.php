@@ -24,6 +24,25 @@ class QueryProxy {
         return $arrayResult;
     }
     
+    function selectByTreshold(){
+        $crtEntity = new ChartEntity();
+        $query = "SELECT `TRESHOLD`,`DURATION` FROM ".$crtEntity->tableName." ORDER BY ".$crtEntity->finalId." ASC;";
+        $result = $this->db->getAll($query);
+        
+        $belowTreshold = 0;
+        $aboveTreshold = 0;
+        foreach($result as $row) {
+            if ($row['DURATION'] > $row['TRESHOLD']){
+                $aboveTreshold++;
+            } else {
+                $belowTreshold++;
+            }
+        }
+        $arrayResult[1]=$belowTreshold;
+        $arrayResult[2]=$aboveTreshold;
+        return $arrayResult;
+    }
+    
     function insertEntityIntoDatabase($crtEntity){
         return $this->db->execute($crtEntity->sqlInsertString());
     }
